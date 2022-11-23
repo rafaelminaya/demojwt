@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 // - Segundo "filtro" para el proceso de autorización, para cuando el cliente desee usar el token, adjuntado a las solicitudes para ingresar a los enpoints
 // - Anotado como componente de Spring, para poder gestionarse como un bean de Spring e inyectarse como dependencia.
@@ -30,14 +29,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-
+        System.out.println("doFilterInternal");
         // Capturamos el token con toda y el prefijo "Bearer" por medio del encabezado "Authorization"
-//        String bearerToken = request.getHeader("Authorization");
-
         String header = request.getHeader(JwtServiceImpl.HEADER_STRING);
 
         // Verificamos que exista el token y que cumpla con el formato correcto.
         if (!requiresAuthentication(header)) {
+            System.out.println("Entra 1");
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,12 +44,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         //Verificamos si el token es válido
         if (this.jwtService.validate(header)) {
-
-//            authentication = new UsernamePasswordAuthenticationToken(this.jwtService.getUsername(header), null, this.jwtService.getRoles(header));
+            System.out.println("Entra 2");
+            // Retornamos una intancia del tipo del método, que incluye el "email" extraído del token,
+            // necesario para que el usuario pueda autenticarse.
             authentication = new UsernamePasswordAuthenticationToken(this.jwtService.getUsername(header), null, this.jwtService.getRoles(header));
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println("Sale");
         /*
         // Verificamos que exista el token y que cumpla con el formato correcto.
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {

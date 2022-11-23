@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UsuarioServiceImpl implements IUsuarioService {
@@ -15,5 +17,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public Usuario save(Usuario usuario) {
         return this.usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public List<Usuario> listAll() {
+        return this.usuarioRepository.findAll();
     }
 }

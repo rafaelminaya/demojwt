@@ -11,7 +11,7 @@ import java.util.Collections;
 // Clase que implementa la interfaz "UserDetails", propia de "Spring security"
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    // Inyectamos esta dependencia por constructor, mediante la anotación "AllArgsConstructor" de "lombok"
+    // Recibirá un único argumento por constructor.
     private final Usuario usuario;
 
     // Método personalizado, para poder saber el nombre

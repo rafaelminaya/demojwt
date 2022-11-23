@@ -1,19 +1,18 @@
 package com.rminaya.demojwt.security.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface JwtService {
 
-    // Método que se encarga de crear el token
-//    String create(String nombre, String email);
-    String create(Authentication auth) throws JsonProcessingException;
+    // Método que se encarga de crear el token, a partir de un usuario logueado
+    String create(String nombre, String email);
+
+    // Método que se encarga de crear el token, a partir de un usuario nuevo
+    String create(Authentication auth);
 
     // Método para obtener los claims/payload del JWT
     Claims getClaims(String token);
@@ -25,7 +24,8 @@ public interface JwtService {
 
     // Método para obtener los roles
 //    List<?> getRoles(String token);
-    public Collection<? extends GrantedAuthority> getRoles(String token) throws JsonMappingException, JsonProcessingException;
-    // Método para resolver(quitar la palabra Bearer) el token
+    Collection<? extends GrantedAuthority> getRoles(String token);
+
+    // Método para resolver(quitar la palabra Bearer) del token
     String resolve(String token);
 }
