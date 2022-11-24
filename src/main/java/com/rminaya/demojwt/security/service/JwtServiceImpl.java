@@ -7,26 +7,24 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Service
+@Component
 public class JwtServiceImpl implements JwtService {
     // Llave secreta
     private final static String ACCESS_TOKEN_SECRET = "8206d5ed98a0a19424cf2ffcb6a2e44e29024bc1325fd54bae01ed880d92609a";
-    // Tiempo de vida util del token (30 días en segundos)
-    private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 2592000L;
+    // Tiempo de vida util del token (30 minutos en milisegundos)
+    private final static Long ACCESS_TOKEN_VALIDITY_MILISECONDS = 1800000L; //2592000L
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
 
     @Override
     public String create(String nombre, String email) {
-        System.out.println("creando");
-        // Convertirmos 2592000L en los milisegundos multiplicando por 1000, ya que lo usaremos de esta forma.
-        long expirationtime = ACCESS_TOKEN_VALIDITY_SECONDS * 1000;
+        System.out.println("JwtServiceImpl - create()");
         // Asignamos como "fecha de expiración" a la "fecha actual" en milisegundos sumados con la "fecha de expiración" del token en milisegundos
-        Date expirationDate = new Date(System.currentTimeMillis() + expirationtime);
+        Date expirationDate = new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_MILISECONDS);
         // Mapa con el nombre del usuario para enviar al token
         Map<String, Object> extra = new HashMap<>();
         extra.put("nombre", nombre);
@@ -44,12 +42,9 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String create(Authentication auth) {
-        System.out.println("creando");
-        // Convertirmos 2592000L en los milisegundos multiplicando por 1000, ya que lo usaremos de esta forma.
-        long expirationtime = ACCESS_TOKEN_VALIDITY_SECONDS * 1000;
+        System.out.println("JwtServiceImpl - create()");
         // Asignamos como "fecha de expiración" a la "fecha actual" en milisegundos sumados con la "fecha de expiración" del token en milisegundos
-        Date expirationDate = new Date(System.currentTimeMillis() + expirationtime);
-//        String username = ((UserDetailsImpl) auth.getPrincipal()).getUsername();
+        Date expirationDate = new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_MILISECONDS);
 
         // Capturamos el "authResult.getPrincipal()" y lo parseamos a nuestra clase "UserDetailsImpl" para poder crear el token.
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
@@ -70,7 +65,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public Claims getClaims(String token) {
-        System.out.println("reclamando");
+        System.out.println("JwtServiceImpl - getClaims()");
         /*
          * Claims : Interfaz necesaria ya que el ".getBody()" retorna de este tipo de
          * interfaz. Contendrá el contenido del token ya desencriptado.
@@ -92,6 +87,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public boolean validate(String token) {
+        System.out.println("JwtServiceImpl - validate()");
         // Validamos el token
         // Variable que asignará "true" si el token se ha verificado correctamente o
         // "false" en caso contrario.

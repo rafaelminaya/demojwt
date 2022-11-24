@@ -31,6 +31,7 @@ public class SwaggerConfig {
      */
     @Bean
     public Docket api() {
+        System.out.println("SwaggerConfig - api");
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.rminaya.demojwt.controller"))
@@ -46,10 +47,10 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Todo API",
-                "La API REST de ToDo App.",
+                "La API REST de demojwt.",
                 "v1",
                 "Terms of service",
-                new Contact("SACAViX Tech", "www.example.com", "myeaddress@company.com"),
+                new Contact("Rafael Minaya", "www.example.com", "rafael.dm.20@gmail.com"),
                 "License of API", "API license URL", Collections.emptyList());
     }
 }

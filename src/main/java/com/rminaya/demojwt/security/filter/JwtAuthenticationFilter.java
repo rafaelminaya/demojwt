@@ -24,7 +24,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JwtService jwtService;
-
+    // MÉTODOS SOBRE ESCRITOS MANUALMENTE
     /*
      * Sobre escribimos, por medio del IDE, el método "attemptAuthentication".
      * Este será el método encargado de hacer un intento de "autenticación" para este filtro "JwtAuthenticationFilter".
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-        System.out.println("attemptAuthentication");
+        System.out.println("JwtAuthenticationFilter - attemptAuthentication");
         // Implementamos el método antes de retornarlo.
         // Creamos un objeto de tipo "AuthCredentials" que contendrá las "credenciales de autenticación"/"Authentication"
         AuthCredentials authCredentials;
@@ -60,8 +60,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         /*
          * Retornamos la autenticación. Esta se realiza con el token (por medio de
-         * usuario y contraseña) a través del autenticador "authenticationManager"
-         * authenticate() : Función que atentica
+         * usuario y contraseña) a través del método del autenticador "getAuthenticationManager()"
+         * authenticate() : Función que autentica
          */
         return getAuthenticationManager().authenticate(authToken);
     }
@@ -72,14 +72,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      * Método que completa la "autenticación", en caso de que se haya realizado correctamente.
      * Sobre escribimos, por medio del IDE, el método  "successfulAuthentication".
      * Recibe como parámetros : "request" que es la solicitud y "response" que es la respuesta, un "FilterChain" y
-     * un "authResult" que es el resultado de la "autenticación". */
+     * un "authResult" que es el resultado de la "autenticación".
+     * */
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        System.out.println("successfulAuthentication");
-        System.out.println("authResult = " + authResult);
+
+        System.out.println("JwtAuthenticationFilter - successfulAuthentication");
 
         // Implementamos antes de retornar.
         // Creamos el token
@@ -98,14 +99,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     /*
-     * unsuccessfulAuthentication(): Método que maneja la falla del intento de
-     * autenticación.
+     * unsuccessfulAuthentication(): Método que maneja la falla del intento de autenticación.
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("fallando");
+
+        System.out.println("JwtAuthenticationFilter - unsuccessfulAuthentication");
+
         Map<String, Object> body = new HashMap<>();
         body.put("mensaje", "Error de atenticación: username o password incorrecto!");
 

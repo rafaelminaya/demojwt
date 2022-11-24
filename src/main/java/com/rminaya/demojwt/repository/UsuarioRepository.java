@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
     //"Query method" que obtiene un único usuario según el parámetro email
     Optional<Usuario> findOneByEmail(String email);
 }

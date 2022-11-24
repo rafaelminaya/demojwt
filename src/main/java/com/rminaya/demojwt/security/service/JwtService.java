@@ -17,6 +17,7 @@ public interface JwtService {
     // Método para obtener los claims/payload del JWT
     Claims getClaims(String token);
 
+    // Método para validar el token
     boolean validate(String token);
 
     // Método para obtener el username y roles a partir del JWT

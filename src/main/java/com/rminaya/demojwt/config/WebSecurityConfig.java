@@ -32,6 +32,7 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
 
+        System.out.println("WebSecurityConfig - filterChain");
         // Instanciamos nuestro filtro "JwtAuthenticationFilter", ya que ni siquiera fue anotada con "@Component",
         // esto fue necesario ya que, su instancia necesita asignar un atributo de la interfaz "AuthenticationManager"
         // el cual disponemos como parámetro en el método actual, para poder establecer el "AuthenticationManager"
@@ -42,13 +43,13 @@ public class WebSecurityConfig {
         jwtAuthenticationFilter.setAuthenticationManager(authManager);
 
         // Establecemos la URL para el inicio de sesión. Aunque por defecto es "/login"
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         return http
                 .csrf().disable() // Deshabilitamos el "csrf" que es el "Cross-site request forgery". Lanza una excepción.
                 .authorizeRequests() // Entramos a las reglas de las solicitudes
                 .antMatchers("/api/usuario",
-                        "/login", "/v2/api-docs",
+                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/security",
@@ -86,12 +87,14 @@ public class WebSecurityConfig {
     // Implementación de la encriptacion de una contraseña.
     @Bean
     PasswordEncoder passwordEncoder() {
+        System.out.println("WebSecurityConfig - passwordEncoder");
         return new BCryptPasswordEncoder();
     }
 
     // Para que toda esta configuración previa tenga efecto, produciremos el "gestor de autenticación"
     @Bean
     AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        System.out.println("WebSecurityConfig - authManager");
         return http
                 .getSharedObject(AuthenticationManagerBuilder.class)
 //                .userDetailsService(userDetailsService()) // Toma efecto del usuario creado en memoria, enviando por argumento el método "userDetailsService()" creado previamente.

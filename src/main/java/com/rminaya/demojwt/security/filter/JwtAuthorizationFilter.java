@@ -23,19 +23,20 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
-    // MÉTODOS SOBRE ESCRITOS
+    // MÉTODOS SOBRE ESCRITOS MANUALMENTE
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("doFilterInternal");
+        System.out.println("JwtAuthorizationFilter - doFilterInternal");
+
         // Capturamos el token con toda y el prefijo "Bearer" por medio del encabezado "Authorization"
         String header = request.getHeader(JwtServiceImpl.HEADER_STRING);
 
         // Verificamos que exista el token y que cumpla con el formato correcto.
         if (!requiresAuthentication(header)) {
-            System.out.println("Entra 1");
+            System.out.println("requiresAuthentication - false");
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,14 +45,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         //Verificamos si el token es válido
         if (this.jwtService.validate(header)) {
-            System.out.println("Entra 2");
+
             // Retornamos una intancia del tipo del método, que incluye el "email" extraído del token,
             // necesario para que el usuario pueda autenticarse.
             authentication = new UsernamePasswordAuthenticationToken(this.jwtService.getUsername(header), null, this.jwtService.getRoles(header));
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("Sale");
+        System.out.println("doFilterInternal - Termina");
         /*
         // Verificamos que exista el token y que cumpla con el formato correcto.
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -69,7 +70,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // TODO Este comentario es de lo que se hará, no de lo que está abajo.Realizamos la configuración pertinente dentro de "WebSecurityConfig"
     protected boolean requiresAuthentication(String header) {
 
         if (header == null || !header.startsWith(JwtServiceImpl.TOKEN_PREFIX)) {
