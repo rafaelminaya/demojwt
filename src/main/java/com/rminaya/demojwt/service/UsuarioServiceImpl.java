@@ -20,6 +20,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Usuario> listAll() {
         return this.usuarioRepository.findAll();
     }

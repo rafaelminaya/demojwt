@@ -3,6 +3,9 @@ package com.rminaya.demojwt.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Data
@@ -12,8 +15,17 @@ public class Usuario {
     @Column(name = "idusuario")
     private Integer id;
 
+    @NotEmpty(message = "no puede estar vacio.")
+    @Column(nullable = false)
+    @Size(min = 3, max = 255, message = "el tamaño tiene que estar entre 3 y 255")
     private String nombre;
-    @Column(unique = true)
+
+    @NotEmpty(message = "no puede estar vacio")
+    @Email(message = "no es una direccion de correo bien formada.")
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @NotEmpty(message = "no puede estar vacio.")
+    @Column(nullable = false)
     private String password;
 }
