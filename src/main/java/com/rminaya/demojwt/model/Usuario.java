@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -28,4 +29,7 @@ public class Usuario {
     @NotEmpty(message = "no puede estar vacio.")
     @Column(nullable = false)
     private String password;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
 }

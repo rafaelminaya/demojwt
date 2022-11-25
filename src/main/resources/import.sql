@@ -6,7 +6,7 @@ INSERT INTO contacto (idcontacto, nombre, fechanac, celular, email) VALUES (5, '
 INSERT INTO contacto (idcontacto, nombre, fechanac, celular, email) VALUES (6, 'James Gosling', '2017-08-05', '968542563', 'james.gosling@gmail.com');
 
 -- La contraseña seria 123456
-INSERT INTO usuario (idusuario, email, nombre, password) VALUES (1, 'rafael@gmail.com', 'rafael minaya', '$2a$10$T3QsIhWp1LcW9AmpdCBnAuAn3pxvXjQDdOLZgDrwjyh7qUJBFGRdi');
+INSERT INTO usuario (idusuario, email, nombre, fecha_registro, password) VALUES (1, 'rafael@gmail.com', 'rafael minaya', '2020-11-15 18:30:30', '$2a$10$T3QsIhWp1LcW9AmpdCBnAuAn3pxvXjQDdOLZgDrwjyh7qUJBFGRdi');
 
 
 

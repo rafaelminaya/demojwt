@@ -1,11 +1,12 @@
 package com.rminaya.demojwt.service;
 
 import com.rminaya.demojwt.model.Usuario;
+import com.rminaya.demojwt.service.dto.UsuarioDTO;
 
 import java.util.List;
 
 public interface IUsuarioService {
-    Usuario save(Usuario usuario);
+    UsuarioDTO save(Usuario usuario);
 
-    List<Usuario> listAll();
+    List<UsuarioDTO> listAll();
 }

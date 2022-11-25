@@ -3,11 +3,11 @@ package com.rminaya.demojwt.controller;
 import com.rminaya.demojwt.model.Usuario;
 import com.rminaya.demojwt.security.service.JwtService;
 import com.rminaya.demojwt.service.IUsuarioService;
+import com.rminaya.demojwt.service.dto.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/usuario")
@@ -28,7 +27,7 @@ public class UsuarioController {
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody Usuario usuario, BindingResult result) {
 
         Map<String, Object> response = new HashMap<>();
-        Usuario nuevoUsuario = null;
+        UsuarioDTO nuevoUsuario = null;
         String token = "";
 
         // Validación seteando el ID con nulo o cero para  que no haga un "update" en vez que "insert"
@@ -46,13 +45,7 @@ public class UsuarioController {
         }
 
         try {
-
-            nuevoUsuario = new Usuario();
-            nuevoUsuario.setNombre(usuario.getNombre());
-            nuevoUsuario.setEmail(usuario.getEmail());
-            //Encriptamos el password
-            nuevoUsuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
-            nuevoUsuario = this.usuarioService.save(nuevoUsuario);
+            nuevoUsuario = this.usuarioService.save(usuario);
             //Obtenemos y devolvemos un token al nuevo usuario
             token = jwtService.create(nuevoUsuario.getNombre(), nuevoUsuario.getEmail());
 
@@ -69,7 +62,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<Usuario> listarTodos() {
+    public List<UsuarioDTO> listarTodos() {
         return this.usuarioService.listAll();
     }
 }
